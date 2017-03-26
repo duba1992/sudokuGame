@@ -5,7 +5,7 @@
 #include <stdio.h>
 using namespace std;
 
-void sudokuFill(int mas[9][9]) {
+void sudokuFill(Sudoku *s) {
     
     
     int count = 1;
@@ -38,26 +38,32 @@ void sudokuFill(int mas[9][9]) {
             if (x == 8 && y == 0) {
                 count = 9;
             }
-            mas[x][y] = count;
+            s->array[x][y] = count;// fill array without shacking
             ++count;
         }
     }
 }
-void sudokuShow(int mas[9][9]) {
+void sudokuShow(Sudoku *s) {
     for (int x = 0; x < 9;x++) {
-        for (int y = 0; y < 9; y++) {
+               for (int y = 0; y < 9; y++) {
             
-            if (mas[x][y] == 0) {
-                cout << "  ";
+            if (s->array[x][y] > 9){
+             cout <<"| "<<s->array[x][y] - 9 << " ";
             }
-            else {
-                cout << mas[x][y] << " ";
+            if (s->array[x][y] == 0) {
+                
+                cout << "|   ";
+            }
+            if(s->array[x][y] > 0 && s->array[x][y]<10){
+            
+                cout <<"| "<<s->array[x][y] << " ";
             }
         }
+        cout<<"|";
         cout << endl;
     }
 }
-void sudokuShake(int mas[9][9]) {
+void sudokuShake(Sudoku *s) {
     
     srand(time(NULL));
     int choise;
@@ -72,31 +78,31 @@ void sudokuShake(int mas[9][9]) {
             for (int y = 0; y < 9; y++) {
                 if (choise == 1 || choise == 4 || choise == 7) {
                     if (horver) {
-                        swap(mas[choise][y], mas[choise + 1][y]);
+                        swap(s->array[choise][y], s->array[choise + 1][y]);
                         choise = tmp;
                     }
                     if (horver == 0) {
-                        swap(mas[y][choise], mas[y][choise + 1]);
+                        swap(s->array[y][choise], s->array[y][choise + 1]);
                         choise = tmp;
                     }
                 }
                 if (choise == 0 || choise == 3 || choise == 6) {
                     if (horver) {
-                        swap(mas[choise][y], mas[choise + 2][y]);
+                        swap(s->array[choise][y], s->array[choise + 2][y]);
                         choise = tmp;
                     }
                     if (horver == 0) {
-                        swap(mas[y][choise], mas[y][choise + 2]);
+                        swap(s->array[y][choise], s->array[y][choise + 2]);
                         choise = tmp;
                     }
                 }
                 if (choise == 2 || choise == 5 || choise == 8) {
                     if (horver) {
-                        swap(mas[choise][y], mas[choise - 1][y]);
+                        swap(s->array[choise][y], s->array[choise - 1][y]);
                         choise = tmp;
                     }
                     if (horver == 0) {
-                        swap(mas[y][choise], mas[y][choise - 1]);
+                        swap(s->array[y][choise], s->array[y][choise - 1]);
                         choise = tmp;
                     }
                 }
@@ -105,7 +111,7 @@ void sudokuShake(int mas[9][9]) {
         ++shake;
     }
 }
-void sudokuStart(int mas[9][9], int level) {
+void sudokuStart(Sudoku *s, int level) {
     srand(time(NULL));
     int zero = 0;
     int x = 0;
@@ -127,11 +133,11 @@ void sudokuStart(int mas[9][9], int level) {
     while (zero !=0) {
         x = rand() % 9;
         y = rand() % 9;
-        if (mas[x][y] == 0) {
+        if (s->array[x][y] == 0) {
             continue;
         }
         else {
-            mas[x][y] = 0;
+            s->array[x][y] = 0;
             --zero;
         }
         
